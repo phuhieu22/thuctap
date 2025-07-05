@@ -494,9 +494,6 @@
                       </div>
                     @endforeach
                   </div>
-                  <span class="selected-option mt-2 d-block small text-muted">
-                    {{ $laptop->variants->first()->variant_name ?? 'Base Model' }}
-                  </span>
                 </div>
               @endif
 
