@@ -21,12 +21,17 @@ class LaptopController extends Controller
         $filters = $request->only(['brand_id', 'category_id', 'price_min', 'price_max', 'search']);
         $laptops = $this->laptopService->getAllLaptops($filters);
 
-        return view('laptops.index', compact('laptops', 'filters'));
+        return view('admin.laptops.index', compact('laptops', 'filters'));
     }
 
     public function create()
     {
-        return view('laptops.create');
+        // Get brands and categories for the form
+        $brands = \App\Models\Brand::all();
+        $categories = \App\Models\Category::all();
+        $promotions = \App\Models\Promotion::all();
+
+        return view('admin.laptops.create', compact('brands', 'categories', 'promotions'));
     }
 
     public function store(StoreLaptopRequest $request)
@@ -37,7 +42,7 @@ class LaptopController extends Controller
 
         $laptop = $this->laptopService->storeLaptop($data, $images, $promotionIds);
 
-        return redirect()->route('laptops.show', $laptop->id)
+        return redirect()->route('admin.laptops.show', $laptop->id)
             ->with('success', 'Laptop created successfully.');
     }
 
@@ -45,14 +50,17 @@ class LaptopController extends Controller
     {
         $laptop = $this->laptopService->getLaptopById($id);
 
-        return view('laptops.show', compact('laptop'));
+        return view('admin.laptops.show', compact('laptop'));
     }
 
     public function edit(int $id)
     {
         $laptop = $this->laptopService->getLaptopById($id);
+        $brands = \App\Models\Brand::all();
+        $categories = \App\Models\Category::all();
+        $promotions = \App\Models\Promotion::all();
 
-        return view('laptops.edit', compact('laptop'));
+        return view('admin.laptops.edit', compact('laptop', 'brands', 'categories', 'promotions'));
     }
 
     public function update(UpdateLaptopRequest $request, int $id)
@@ -64,7 +72,7 @@ class LaptopController extends Controller
 
         $laptop = $this->laptopService->updateLaptop($id, $data, $images, $deleteImageIds, $promotionIds);
 
-        return redirect()->route('laptops.show', $laptop->id)
+        return redirect()->route('admin.laptops.show', $laptop->id)
             ->with('success', 'Laptop updated successfully.');
     }
 
@@ -72,7 +80,7 @@ class LaptopController extends Controller
     {
         $this->laptopService->deleteLaptop($id);
 
-        return redirect()->route('laptops.index')
+        return redirect()->route('admin.laptops.index')
             ->with('success', 'Laptop deleted successfully.');
     }
 }

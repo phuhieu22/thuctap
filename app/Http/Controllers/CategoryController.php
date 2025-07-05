@@ -24,7 +24,7 @@ class CategoryController extends Controller
     {
         $categories = $this->categoryService->getAllCategories();
 
-        return view('categories.index', compact('categories'));
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -32,7 +32,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        return view('admin.categories.create');
     }
 
     /**
@@ -43,7 +43,7 @@ class CategoryController extends Controller
         $data = $request->validated();
         $category = $this->categoryService->storeCategory($data);
 
-        return redirect()->route('categories.show', $category->id)
+        return redirect()->route('admin.categories.show', $category->id)
             ->with('success', 'Category created successfully.');
     }
 
@@ -54,7 +54,7 @@ class CategoryController extends Controller
     {
         $category = $this->categoryService->getCategoryById($id);
 
-        return view('categories.show', compact('category'));
+        return view('admin.categories.show', compact('category'));
     }
 
     /**
@@ -64,7 +64,7 @@ class CategoryController extends Controller
     {
         $category = $this->categoryService->getCategoryById($id);
 
-        return view('categories.edit', compact('category'));
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -75,7 +75,7 @@ class CategoryController extends Controller
         $data = $request->validated();
         $category = $this->categoryService->updateCategory($id, $data);
 
-        return redirect()->route('categories.show', $category->id)
+        return redirect()->route('admin.categories.show', $category->id)
             ->with('success', 'Category updated successfully.');
     }
 
@@ -87,10 +87,10 @@ class CategoryController extends Controller
         try {
             $this->categoryService->destroyCategory($id);
             
-            return redirect()->route('categories.index')
+            return redirect()->route('admin.categories.index')
                 ->with('success', 'Category deleted successfully.');
         } catch (Exception $e) {
-            return redirect()->route('categories.index')
+            return redirect()->route('admin.categories.index')
                 ->with('error', $e->getMessage());
         }
     }

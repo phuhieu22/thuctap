@@ -11,11 +11,13 @@
      <meta name="description" content="A fully responsive premium admin dashboard template" />
      <meta name="author" content="Techzaa" />
      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-     <link rel="shortcut icon" href="assets/images/favicon.ico">
-     <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
-     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
-     <script src="assets/js/config.js"></script>
+     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+     <link href="{{ asset('assets/css/vendor.min.css') }}" rel="stylesheet" type="text/css" />
+     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
+     <!-- Font Awesome for action icons -->
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" type="text/css" />
+     <script src="{{ asset('assets/js/config.js') }}"></script>
 </head>
 
 <body>
@@ -449,14 +451,14 @@
           <div class="main-nav">
                <!-- Sidebar Logo -->
                <div class="logo-box">
-                    <a href="index-2.html" class="logo-dark">
-                         <img src="assets/images/logo-sm.png" class="logo-sm" alt="logo sm">
-                         <img src="assets/images/logo-dark.png" class="logo-lg" alt="logo dark">
+                    <a href="{{ route('admin.dashboard') }}" class="logo-dark">
+                         <img src="{{ asset('assets/images/logo-sm.png') }}" class="logo-sm" alt="logo sm">
+                         <img src="{{ asset('assets/images/logo-dark.png') }}" class="logo-lg" alt="logo dark">
                     </a>
 
-                    <a href="index-2.html" class="logo-light">
-                         <img src="assets/images/logo-sm.png" class="logo-sm" alt="logo sm">
-                         <img src="assets/images/logo-light.png" class="logo-lg" alt="logo light">
+                    <a href="{{ route('admin.dashboard') }}" class="logo-light">
+                         <img src="{{ asset('assets/images/logo-sm.png') }}" class="logo-sm" alt="logo sm">
+                         <img src="{{ asset('assets/images/logo-light.png') }}" class="logo-lg" alt="logo light">
                     </a>
                </div>
 
@@ -471,7 +473,7 @@
                          <li class="menu-title">General</li>
 
                          <li class="nav-item">
-                              <a class="nav-link" href="index-2.html">
+                              <a class="nav-link" href="{{ route('admin.dashboard') }}">
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:widget-5-bold-duotone"></iconify-icon>
                                    </span>
@@ -484,24 +486,15 @@
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:t-shirt-bold-duotone"></iconify-icon>
                                    </span>
-                                   <span class="nav-text"> Products </span>
+                                   <span class="nav-text"> Laptops </span>
                               </a>
                               <div class="collapse" id="sidebarProducts">
                                    <ul class="nav sub-navbar-nav">
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="product-list.html">List</a>
+                                             <a class="sub-nav-link" href="{{ route('admin.laptops.index') }}">List</a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="product-grid.html">Grid</a>
-                                        </li>
-                                        <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="product-details.html">Details</a>
-                                        </li>
-                                        <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="product-edit.html">Edit</a>
-                                        </li>
-                                        <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="product-add.html">Create</a>
+                                             <a class="sub-nav-link" href="{{ route('admin.laptops.create') }}">Create</a>
                                         </li>
                                    </ul>
                               </div>
@@ -517,13 +510,10 @@
                               <div class="collapse" id="sidebarCategory">
                                    <ul class="nav sub-navbar-nav">
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="category-list.html">List</a>
+                                             <a class="sub-nav-link" href="{{ route('admin.categories.index') }}">List</a>
                                         </li>                         
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="category-edit.html">Edit</a>
-                                        </li>
-                                        <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="category-add.html">Create</a>
+                                             <a class="sub-nav-link" href="{{ route('admin.categories.create') }}">Create</a>
                                         </li>
                                    </ul>
                               </div>
@@ -1263,12 +1253,12 @@
 
      </div>
      <!-- END Wrapper -->
-     <script src="assets/js/vendor.js"></script>
-     <script src="assets/js/app.js"></script>
-     <script src="assets/vendor/jsvectormap/js/jsvectormap.min.js"></script>
-     <script src="assets/vendor/jsvectormap/maps/world-merc.js"></script>
-     <script src="assets/vendor/jsvectormap/maps/world.js"></script>
-     <script src="assets/js/pages/dashboard.js"></script>
+     <script src="{{ asset('assets/js/vendor.js') }}"></script>
+     <script src="{{ asset('assets/js/app.js') }}"></script>
+     <script src="{{ asset('assets/vendor/jsvectormap/js/jsvectormap.min.js') }}"></script>
+     <script src="{{ asset('assets/vendor/jsvectormap/maps/world-merc.js') }}"></script>
+     <script src="{{ asset('assets/vendor/jsvectormap/maps/world.js') }}"></script>
+     <script src="{{ asset('assets/js/pages/dashboard.js') }}"></script>
 
 </body>
 </html>

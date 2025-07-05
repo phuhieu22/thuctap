@@ -6,7 +6,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="h3 mb-0">Laptops Management</h1>
-                <a href="{{ route('laptops.create') }}" class="btn btn-success">
+                <a href="{{ route('admin.laptops.create') }}" class="btn btn-success">
                     <i class="fas fa-plus"></i> Add New Laptop
                 </a>
             </div>
@@ -85,15 +85,15 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group" role="group">
-                                                    <a href="{{ route('laptops.show', $laptop->id) }}" 
+                                                    <a href="{{ route('admin.laptops.show', $laptop->id) }}" 
                                                        class="btn btn-info btn-sm" title="View">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
-                                                    <a href="{{ route('laptops.edit', $laptop->id) }}" 
+                                                    <a href="{{ route('admin.laptops.edit', $laptop->id) }}" 
                                                        class="btn btn-primary btn-sm" title="Edit">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <form method="POST" action="{{ route('laptops.destroy', $laptop->id) }}" 
+                                                    <form method="POST" action="{{ route('admin.laptops.destroy', $laptop->id) }}" 
                                                           style="display: inline-block;"
                                                           onsubmit="return confirm('Are you sure you want to delete this laptop?')">
                                                         @csrf
@@ -120,7 +120,7 @@
                             <i class="fas fa-laptop fa-3x text-muted mb-3"></i>
                             <h4 class="text-muted">No laptops found</h4>
                             <p class="text-muted">Start by adding your first laptop.</p>
-                            <a href="{{ route('laptops.create') }}" class="btn btn-success">
+                            <a href="{{ route('admin.laptops.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Add New Laptop
                             </a>
                         </div>
