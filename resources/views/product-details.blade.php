@@ -80,15 +80,12 @@
     }
     
     .color-option {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 8px;
+      border-radius: 0.25rem;
+      width: auto;
+      height: auto;
+      padding: 0.25rem 0.75rem;
+      text-align: center;
+      display: inline-block;
     }
     
     .color-option.active {
@@ -484,48 +481,24 @@
 
               <!-- Variants Options -->
               @if($laptop->variants && $laptop->variants->count() > 0)
-              <div class="product-colors mb-4">
+                <div class="product-colors mb-4">
                 <h6 class="option-title mb-3">Variants:</h6>
-                <div class="color-options d-flex">
-                  @foreach($laptop->variants->take(4) as $index => $variant)
-                  <div class="color-option {{ $index === 0 ? 'active' : '' }}" data-variant-id="{{ $variant->id }}" data-price="{{ $variant->price }}" data-stock="{{ $variant->stock }}">
-                    <i class="bi bi-check"></i>
+                  <div class="color-options d-flex flex-wrap gap-2">
+                    @foreach($laptop->variants->take(4) as $index => $variant)
+                      <div class="color-option btn btn-outline-secondary btn-sm {{ $index === 0 ? 'active' : '' }}"
+                        data-variant-id="{{ $variant->id }}"
+                        data-price="{{ $variant->price }}"
+                        data-stock="{{ $variant->stock }}"
+                        data-variant-name="{{ $variant->variant_name }}">
+                        {{ $variant->variant_name }}
+                      </div>
+                    @endforeach
                   </div>
-                  @endforeach
+                  <span class="selected-option mt-2 d-block small text-muted">
+                    {{ $laptop->variants->first()->variant_name ?? 'Base Model' }}
+                  </span>
                 </div>
-                <span class="selected-option mt-2 d-block">{{ $laptop->variants->first()->variant_name ?? 'Base Model' }}</span>
-              </div>
-              @else
-              <div class="product-colors mb-4">
-                <h6 class="option-title mb-3">Color:</h6>
-                <div class="color-options d-flex">
-                  <div class="color-option active" data-color="Black" style="background-color: #222;">
-                    <i class="bi bi-check"></i>
-                  </div>
-                  <div class="color-option" data-color="Silver" style="background-color: #C0C0C0;">
-                    <i class="bi bi-check"></i>
-                  </div>
-                  <div class="color-option" data-color="Blue" style="background-color: #1E3A8A;">
-                    <i class="bi bi-check"></i>
-                  </div>
-                  <div class="color-option" data-color="Rose Gold" style="background-color: #B76E79;">
-                    <i class="bi bi-check"></i>
-                  </div>
-                </div>
-                <span class="selected-option mt-2 d-block">Black</span>
-              </div>
               @endif
-
-              <!-- Size Options -->
-              <div class="product-sizes mb-4">
-                <h6 class="option-title mb-3">Size:</h6>
-                <div class="size-options d-flex">
-                  <div class="size-option" data-size="S">S</div>
-                  <div class="size-option active" data-size="M">M</div>
-                  <div class="size-option" data-size="L">L</div>
-                </div>
-                <span class="selected-option mt-2 d-block">M</span>
-              </div>
 
               <!-- Quantity Selector -->
               <div class="product-quantity mb-4">
