@@ -12,8 +12,8 @@ class LaptopController extends Controller
         $laptops = Laptop::with(['brand', 'category', 'images'])
             ->where('stock', '>', 0)
             ->paginate(12);
-        
-        return view('laptops.index', compact('laptops'));
+
+        return view('client.layouts.index', compact('laptops'));
     }
 
     public function create()
@@ -48,10 +48,11 @@ class LaptopController extends Controller
     {
         $laptop = Laptop::with([
             'brand',
-            'category', 
+            'category',
             'images',
             'variants'
         ])->findOrFail($id);
+        $variant = $laptop->variants->first();
 
         $relatedLaptops = Laptop::with(['brand', 'images'])
             ->where('category_id', $laptop->category_id)
@@ -60,6 +61,6 @@ class LaptopController extends Controller
             ->limit(4)
             ->get();
 
-        return view('product-details', compact('laptop', 'relatedLaptops'));
+        return view('product-details', compact('laptop', 'relatedLaptops','variant'));
     }
 }
