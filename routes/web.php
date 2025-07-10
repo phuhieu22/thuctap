@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\LaptopController;
-use App\Http\Controllers\ResetPasswordController;
 
 Route::get('/', function () {
     return redirect()->route('laptops.index');
@@ -11,6 +12,15 @@ Route::get('/', function () {
 Route::get('/product-detail/{id}', [LaptopController::class, 'show'])->name('product.show');
 Route::get('/laptops', [LaptopController::class, 'index'])->name('laptops.index');
 Route::get('/laptops/{id}', [LaptopController::class, 'show'])->name('laptops.show');
+
+// Giỏ hàng
+Route::prefix('cart')->name('cart.')->group(function () {
+    Route::post('/add', [CartController::class, 'addToCart'])->name('add');
+    Route::get('/', [CartController::class, 'viewCart'])->name('view');
+    Route::patch('/{id}/update', [CartController::class, 'updateQuantity'])->name('update');
+    Route::delete('/{id}/remove', [CartController::class, 'remove'])->name('remove');
+});
+
 
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');

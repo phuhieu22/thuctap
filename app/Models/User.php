@@ -12,7 +12,7 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable ,SoftDeletes;
-    
+
 
     /**
      * The attributes that are mass assignable.
@@ -38,6 +38,9 @@ class User extends Authenticatable
         'password_hash',
         'remember_token',
     ];
+    protected $attributes = [
+    'role_id' => 1,
+];
 
     /**
      * Get the attributes that should be cast.

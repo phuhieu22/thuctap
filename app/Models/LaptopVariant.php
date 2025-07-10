@@ -16,6 +16,12 @@ class LaptopVariant extends Model
         'price',
         'stock',
         'specifications',
-      
+
     ];
+
+        public function laptop()
+{
+    return $this->belongsTo(Laptop::class);
+}
+
 }
