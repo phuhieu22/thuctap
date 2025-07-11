@@ -2,64 +2,85 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Laptop;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreLaptopRequest;
+use App\Http\Requests\UpdateLaptopRequest;
+use App\Services\LaptopService;
 
 class LaptopController extends Controller
 {
-    public function index()
+    protected $laptopService;
+
+    public function __construct(LaptopService $laptopService)
     {
-        $laptops = Laptop::with(['brand', 'category', 'images'])
-            ->where('stock', '>', 0)
-            ->paginate(12);
-        
-        return view('laptops.index', compact('laptops'));
+        $this->laptopService = $laptopService;
+    }
+
+    public function index(Request $request)
+    {
+        $filters = $request->only(['brand_id', 'category_id', 'price_min', 'price_max', 'search']);
+        $laptops = $this->laptopService->getAllLaptops($filters);
+
+        return view('admin.laptops.index', compact('laptops', 'filters'));
     }
 
     public function create()
     {
-        return view('laptops.create');
+        // Get brands and categories for the form
+        $brands = \App\Models\Brand::all();
+        $categories = \App\Models\Category::all();
+        $promotions = \App\Models\Promotion::all();
+
+        return view('admin.laptops.create', compact('brands', 'categories', 'promotions'));
     }
 
-    public function store(Request $request)
+    public function store(StoreLaptopRequest $request)
     {
-        $request->validate([
-            'model' => 'required|string|max:255',
-            'brand_id' => 'required|integer',
-            'category_id' => 'required|integer',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-            'description' => 'nullable|string',
-        ]);
+        $data = $request->validated();
+        $images = $request->file('images', []);
+        $promotionIds = $request->input('promotions', []);
 
-        Laptop::create($request->only([
-            'brand_id',
-            'category_id',
-            'model',
-            'price',
-            'stock',
-            'description',
-        ]));
+        $laptop = $this->laptopService->storeLaptop($data, $images, $promotionIds);
 
-        return redirect()->route('laptops.index')->with('success', 'Laptop created successfully.');
+        return redirect()->route('admin.laptops.show', $laptop->id)
+            ->with('success', 'Laptop created successfully.');
     }
 
-    public function show($id)
+    public function show(int $id)
     {
-        $laptop = Laptop::with([
-            'brand',
-            'category', 
-            'images',
-            'variants'
-        ])->findOrFail($id);
+        $laptop = $this->laptopService->getLaptopById($id);
 
-        $relatedLaptops = Laptop::with(['brand', 'images'])
-            ->where('category_id', $laptop->category_id)
-            ->where('id', '!=', $laptop->id)
-            ->where('stock', '>', 0)
-            ->limit(4)
-            ->get();
+        return view('admin.laptops.show', compact('laptop'));
+    }
 
-        return view('product-details', compact('laptop', 'relatedLaptops'));
+    public function edit(int $id)
+    {
+        $laptop = $this->laptopService->getLaptopById($id);
+        $brands = \App\Models\Brand::all();
+        $categories = \App\Models\Category::all();
+        $promotions = \App\Models\Promotion::all();
+
+        return view('admin.laptops.edit', compact('laptop', 'brands', 'categories', 'promotions'));
+    }
+
+    public function update(UpdateLaptopRequest $request, int $id)
+    {
+        $data = $request->validated();
+        $images = $request->file('images', []);
+        $deleteImageIds = $request->input('delete_image_ids', []);
+        $promotionIds = $request->input('promotions', []);
+
+        $laptop = $this->laptopService->updateLaptop($id, $data, $images, $deleteImageIds, $promotionIds);
+
+        return redirect()->route('admin.laptops.show', $laptop->id)
+            ->with('success', 'Laptop updated successfully.');
+    }
+
+    public function destroy(int $id)
+    {
+        $this->laptopService->deleteLaptop($id);
+
+        return redirect()->route('admin.laptops.index')
+            ->with('success', 'Laptop deleted successfully.');
     }
 }

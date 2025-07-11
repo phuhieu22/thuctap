@@ -2,59 +2,52 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Laptop extends Model
 {
-    use HasFactory;
+	use SoftDeletes; 
 
-    protected $fillable = [
-        'brand_id',
-        'category_id',
-        'model',
-        'price',
-        'original_price',
-        'stock',
-        'description',
-        'short_description',
-        'specifications',
-        'features',
-        'is_active',
-    ];
+	protected $table = 'laptops';
 
-    protected $casts = [
-        'specifications' => 'array',
-        'features' => 'array',
-        'price' => 'decimal:2',
-        'original_price' => 'decimal:2',
-        'is_active' => 'boolean',
-    ];
+	protected $fillable = [
+		'brand_id',
+		'category_id',
+		'model',
+		'price',
+		'stock',
+		'description'
+	];
 
-    public function brand()
-    {
-        return $this->belongsTo(Brand::class);
-    }
+	public function brand(): BelongsTo
+	{
+		return $this->belongsTo(Brand::class);
+	}
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
+	public function category(): BelongsTo
+	{
+		return $this->belongsTo(Category::class); 
+	}
 
-    public function images()
-    {
-        return $this->hasMany(LaptopImage::class);
-    }
+	public function images(): HasMany
+	{
+		return $this->hasMany(LaptopImage::class);
+	}
 
-    public function variants()
-    {
-        return $this->hasMany(LaptopVariant::class);
-    }
-
-    public function reviews()
-    {
-        return $this->hasMany(Review::class);
-    }
+	public function variants(): HasMany
+	{
+		return $this->hasMany(LaptopVariant::class);
+	}
+	
+	public function promotions(): BelongsToMany
+  {
+        return $this->belongsToMany(Promotion::class, 'laptop_promotions');
+  }
 
     public function getDiscountPercentageAttribute()
     {

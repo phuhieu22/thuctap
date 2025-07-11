@@ -2,18 +2,32 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class Review extends Model
 {
-    /** @use HasFactory<\Database\Factories\ReviewFactory> */
-    use HasFactory;
-    protected $table = 'reviews';
-    protected $fillable = [
-        'laptop_id',
-        'customer_id',
-        'rating',
-        'comment',
-    ];
+	protected $table = 'reviews';
+
+	protected $fillable = [
+		'laptop_id',
+		'customer_id',
+		'rating',
+		'comment'
+	];
+
+
+	public function laptop(): BelongsTo
+	{
+		return $this->belongsTo(Laptop::class);
+	}
+
+
+	public function customer(): BelongsTo
+	{
+		return $this->belongsTo(User::class, 'customer_id');
+	}
 }
