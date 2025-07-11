@@ -524,16 +524,16 @@
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:box-bold-duotone"></iconify-icon>
                                    </span>
-                                   <span class="nav-text"> Inventory </span>
+                                   <span class="nav-text"> Variants </span>
                               </a>
                               <div class="collapse" id="sidebarInventory">
                                    <ul class="nav sub-navbar-nav">
 
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="inventory-warehouse.html">Warehouse</a>
+                                             <a class="sub-nav-link" href="{{ route('admin.variants.index') }}">List</a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="inventory-received-orders.html">Received Orders</a>
+                                             <a class="sub-nav-link" href="{{ route('admin.variants.create') }}">Create</a>
                                         </li>
                                    </ul>
                               </div>
