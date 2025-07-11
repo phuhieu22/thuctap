@@ -23,7 +23,6 @@ class LaptopVariant extends Model
 		'specifications'
 	];
 
-	// THÊM HÀM QUAN HỆ
 	public function laptop(): BelongsTo
 	{
 		return $this->belongsTo(Laptop::class);

@@ -11,18 +11,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Laptop extends Model
 {
-	use SoftDeletes; // Giữ lại vì có cột deleted_at
+	use SoftDeletes; 
 
 	protected $table = 'laptops';
-
-	// XÓA DÒNG public $incrementing = false;
-
-	protected $casts = [
-		'brand_id' => 'int',
-		'category_id' => 'int',
-		'price' => 'float',
-		'stock' => 'int'
-	];
 
 	protected $fillable = [
 		'brand_id',
@@ -33,7 +24,6 @@ class Laptop extends Model
 		'description'
 	];
 
-	// THÊM CÁC HÀM QUAN HỆ
 	public function brand(): BelongsTo
 	{
 		return $this->belongsTo(Brand::class);
@@ -41,7 +31,7 @@ class Laptop extends Model
 
 	public function category(): BelongsTo
 	{
-		return $this->belongsTo(Category::class); // Giả sử bạn có model Category
+		return $this->belongsTo(Category::class); 
 	}
 
 	public function images(): HasMany
@@ -55,7 +45,25 @@ class Laptop extends Model
 	}
 	
 	public function promotions(): BelongsToMany
-    {
+  {
         return $this->belongsToMany(Promotion::class, 'laptop_promotions');
+  }
+
+    public function getDiscountPercentageAttribute()
+    {
+        if ($this->original_price && $this->original_price > $this->price) {
+            return round((($this->original_price - $this->price) / $this->original_price) * 100);
+        }
+        return 0;
+    }
+
+    public function getAverageRatingAttribute()
+    {
+        return $this->reviews->avg('rating') ?? 0;
+    }
+
+    public function getMainImageAttribute()
+    {
+        return $this->images->first()?->image_path ?? '/images/placeholder.jpg';
     }
 }
