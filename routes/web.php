@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LaptopController;
+use App\Http\Controllers\VariantController;
 use App\Http\Controllers\ResetPasswordController;
 
 Route::get('/', function () {
@@ -31,3 +32,23 @@ Route::get('/logout', function () {
 
 Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    // Trang dashboard chính
+    Route::get('/', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
+
+    // Route cho Variants (chỉ gồm: index, show, create, edit, destroy)
+    Route::prefix('variants')->name('variants.')->group(function(){
+        Route::get('/', [VariantController::class, 'index'])->name('index');
+        Route::get('/create', [VariantController::class, 'create'])->name('create');
+        Route::post('/store', [VariantController::class, 'store'])->name('store');
+        Route::get('/{id}/show', [VariantController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [VariantController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [VariantController::class, 'update'])->name('update');
+        Route::delete('/{id}/destroy', [VariantController::class, 'destroy'])->name('destroy');
+    });
+
+});
