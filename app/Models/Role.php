@@ -1,22 +1,23 @@
 <?php
 
-
 namespace App\Models;
 
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 
 class Role extends Model
 {
-	protected $table = 'roles';
-	public $incrementing = false;
+    use HasFactory; // 👉 thêm dòng này
 
-	protected $casts = [
-		'id' => 'int'
-	];
+    protected $table = 'roles';
+    public $incrementing = false;
 
-	protected $fillable = [
-		'name'
-	];
+    protected $casts = [
+        'id' => 'int'
+    ];
+
+    protected $fillable = [
+        'name'
+    ];
 }

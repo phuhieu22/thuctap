@@ -35,7 +35,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('categories', CategoryController::class);
 
     // Route cho Variants (chỉ gồm: index, show, create, edit, destroy)
-    Route::prefix('variants')->name('variants.')->group(function(){
+    Route::prefix('variants')->name('variants.')->group(function () {
         Route::get('/', [VariantController::class, 'index'])->name('index');
         Route::get('/create', [VariantController::class, 'create'])->name('create');
         Route::post('/store', [VariantController::class, 'store'])->name('store');
@@ -45,6 +45,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/{id}/destroy', [VariantController::class, 'destroy'])->name('destroy');
     });
 });
+
+// Hiển thị danh sách laptop cho người dùng
+Route::get('/laptops', [LaptopController::class, 'index'])->name('laptops.index');
+
 
 // Search
 Route::get('laptops-search', [LaptopController::class, 'search'])->name('laptops.search');
@@ -56,6 +60,14 @@ Route::prefix('cart')->name('cart.')->group(function () {
     Route::patch('/{id}/update', [CartController::class, 'updateQuantity'])->name('update');
     Route::delete('/{id}/remove', [CartController::class, 'remove'])->name('remove');
 });
+
+// Payment
+Route::prefix('checkout')->middleware('auth')->name('checkout.')->group(function () {
+    Route::get('/', [CartController::class, 'checkoutForm'])->name('form');
+    Route::post('/place-order', [CartController::class, 'placeOrder'])->name('place');
+});
+
+
 
 // Auth
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');

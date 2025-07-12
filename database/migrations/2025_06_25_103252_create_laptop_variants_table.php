@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('laptop_variants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('laptop_id')->constrained();
+            $table->foreignId('laptop_id')->constrained('laptops')->onDelete('cascade');
+            // $table->foreignId('laptop_id')->constrained();
             $table->string('variant_name');
             $table->decimal('price', 10, 2);
             $table->integer('stock');

@@ -5,13 +5,13 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class Promotion extends Model
 {
+	use HasFactory; // 👉 thêm dòng này
 	protected $table = 'promotions';
-
-
 	protected $fillable = [
 		'name',
 		'discount_percentage',
