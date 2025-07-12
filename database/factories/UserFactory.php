@@ -4,42 +4,25 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use App\Models\Role;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
-    protected static ?string $password;
-
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
-    {
-        return [
-             'username' => $this->faker->unique()->userName(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'password_hash' => bcrypt('password'), // mật khẩu giả
-            'name' => $this->faker->name(),
-            'phone' => $this->faker->optional()->phoneNumber(),
-            'address' => $this->faker->optional()->address(),
-            'role_id' => Role::inRandomOrder()->first()?->id ?? Role::factory(),
-            'created_at' => now(),
-            'last_login' => $this->faker->optional()->dateTimeThisMonth(),
-        ];
-    }
+{
+    return [
+        'username' => $this->faker->unique()->userName(),
+        'email' => $this->faker->unique()->safeEmail(),
+        'password_hash' => bcrypt('password'),
+        'name' => $this->faker->name(),
+        'phone' => $this->faker->optional()->numerify('0#########'), // Ví dụ: 10 số kiểu Việt Nam
+        'address' => $this->faker->optional()->address(),
+        'role_id' => 1, // 👈 gán cứng ID đã seed trước
+        'created_at' => now(),
+        'last_login' => $this->faker->optional()->dateTimeThisMonth(),
+    ];
+}
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [

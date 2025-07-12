@@ -11,18 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('laptops', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
-            $table->string('model');
-            $table->decimal('price', 10, 2);
-            $table->integer('stock')->default(0);
-            $table->text('description')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        if (!Schema::hasTable('laptops')) {
+            Schema::create('laptops', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('brand_id')->constrained()->onDelete('cascade');
+                $table->foreignId('category_id')->constrained()->onDelete('cascade');
+                $table->string('model');
+                $table->decimal('price', 10, 2);
+                $table->integer('stock')->default(0);
+                $table->text('description')->nullable();
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
     }
+
 
     /**
      * Reverse the migrations.

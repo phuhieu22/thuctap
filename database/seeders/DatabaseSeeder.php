@@ -2,30 +2,26 @@
 
 namespace Database\Seeders;
 
-use App\Models\LaptopVariant;
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        User::factory(10)->create();
-
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Gọi các Seeder nền tảng TRƯỚC
         $this->call([
             RoleSeeder::class,
             BrandSeeder::class,
             CategorySeeder::class,
-            LaptopSeeder::class,
-            LaptopVariantSeeder::class,
+        ]);
+
+        // Sau đó tạo user (vì đã có role_id)
+        \App\Models\User::factory(10)->create();
+
+        // Gọi LaptopSeeder rồi mới đến LaptopVariantSeeder
+        $this->call([
+            LaptopSeeder::class,         // 👈 Bắt buộc chạy trước
+            LaptopVariantSeeder::class, // 👈 Vì cần có laptop_id
             LaptopImageSeeder::class,
             OrderSeeder::class,
             OrderItemSeeder::class,
@@ -36,4 +32,4 @@ class DatabaseSeeder extends Seeder
             ReviewSeeder::class,
         ]);
     }
-};
+}

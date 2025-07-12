@@ -1,12 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Admin\BrandController;
-use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\LaptopController;
 use App\Http\Controllers\VariantController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\CategoryController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 
@@ -15,7 +13,8 @@ Route::get('/', function () {
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {
-    // Dashboard
+
+    // Trang Dashboard
     Route::get('/', function () {
         $stats = [
             'total_laptops' => \App\Models\Laptop::count(),
@@ -34,8 +33,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('laptops', LaptopController::class);
     Route::resource('categories', CategoryController::class);
-    Route::resource('brands', BrandController::class);
 
+    // Route cho Variants (chỉ gồm: index, show, create, edit, destroy)
     Route::prefix('variants')->name('variants.')->group(function () {
         Route::get('/', [VariantController::class, 'index'])->name('index');
         Route::get('/create', [VariantController::class, 'create'])->name('create');
@@ -47,6 +46,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 });
 
+// Hiển thị danh sách laptop cho người dùng
+Route::get('/laptops', [LaptopController::class, 'index'])->name('laptops.index');
+
+
 // Search
 Route::get('laptops-search', [LaptopController::class, 'search'])->name('laptops.search');
 
@@ -57,6 +60,14 @@ Route::prefix('cart')->name('cart.')->group(function () {
     Route::patch('/{id}/update', [CartController::class, 'updateQuantity'])->name('update');
     Route::delete('/{id}/remove', [CartController::class, 'remove'])->name('remove');
 });
+
+// Payment
+Route::prefix('checkout')->middleware('auth')->name('checkout.')->group(function () {
+    Route::get('/', [CartController::class, 'checkoutForm'])->name('form');
+    Route::post('/place-order', [CartController::class, 'placeOrder'])->name('place');
+});
+
+
 
 // Auth
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');

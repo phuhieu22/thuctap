@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('laptop_variants', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('laptop_variants')) {
+            Schema::create('laptop_variants', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+            });
+        }
     }
+
 
     /**
      * Reverse the migrations.

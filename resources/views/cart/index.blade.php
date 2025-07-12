@@ -200,14 +200,13 @@
         <a href="" class="btn btn-secondary me-3">
             <i class="bi bi-arrow-left me-2"></i> Quay lại
         </a>
-        <button type="submit" class="btn btn-success">
-            <i class="bi bi-cash-coin me-1"></i> Thanh toán
-        </button>
+        <form action="{{ route('checkout.form') }}" method="GET">
+            <button type="submit" class="btn btn-success">
+                <i class="bi bi-cash-coin me-1"></i> Thanh toán
+            </button>
+        </form>
+
     </div>
-
-
-
-
 
 </body>
 
