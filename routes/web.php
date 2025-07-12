@@ -1,10 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\LaptopController;
 use App\Http\Controllers\VariantController;
 use App\Http\Controllers\ResetPasswordController;
-use App\Http\Controllers\CategoryController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 
@@ -13,8 +15,7 @@ Route::get('/', function () {
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {
-
-    // Trang Dashboard
+    // Dashboard
     Route::get('/', function () {
         $stats = [
             'total_laptops' => \App\Models\Laptop::count(),
@@ -33,9 +34,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('laptops', LaptopController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('brands', BrandController::class);
 
-    // Route cho Variants (chỉ gồm: index, show, create, edit, destroy)
-    Route::prefix('variants')->name('variants.')->group(function(){
+    Route::prefix('variants')->name('variants.')->group(function () {
         Route::get('/', [VariantController::class, 'index'])->name('index');
         Route::get('/create', [VariantController::class, 'create'])->name('create');
         Route::post('/store', [VariantController::class, 'store'])->name('store');

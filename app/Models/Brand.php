@@ -1,26 +1,27 @@
 <?php
 
-
 namespace App\Models;
 
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Brand extends Model
 {
-	protected $table = 'brands';
+    use HasFactory;
 
-	protected $casts = [
-		'id' => 'int'
-	];
+    protected $table = 'brands';
 
-	protected $fillable = [
-		'name'
-	];
+    protected $casts = [
+        'id' => 'int',
+    ];
 
-	public function laptops(): HasMany
-	{
-		return $this->hasMany(Laptop::class);
-	}
+    protected $fillable = [
+        'name',
+    ];
+
+    public function laptops(): HasMany
+    {
+        return $this->hasMany(Laptop::class);
+    }
 }
