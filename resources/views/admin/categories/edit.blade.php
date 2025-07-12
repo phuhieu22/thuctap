@@ -110,10 +110,10 @@
             if (!slugField.value || slugField.value === '') {
                 const name = this.value;
                 const slug = name.toLowerCase()
-                    .replace(/[^a-z0-9 -]/g, '') // Remove invalid chars
-                    .replace(/\s+/g, '-')        // Replace spaces with hyphens
-                    .replace(/-+/g, '-')         // Replace multiple hyphens with single hyphen
-                    .trim('-');                  // Remove leading/trailing hyphens
+                    .replace(/[^a-z0-9 -]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-')
+                    .trim('-');
                 
                 slugField.value = slug;
             }
