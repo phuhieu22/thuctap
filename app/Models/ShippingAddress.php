@@ -1,21 +1,23 @@
 <?php
 
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+
 
 class ShippingAddress extends Model
 {
-    /** @use HasFactory<\Database\Factories\ShippingAddressFactory> */
-    use HasFactory;
-    protected $table = 'shipping_addresses';
-    protected $fillable = [
-        'customer_id',
-        'order_id',
-        'address',
-        'city',
-        'postal_code',
-        'country',
-    ];
+	protected $table = 'shipping_addresses';
+	public $incrementing = false;
+
+	protected $fillable = [
+		'customer_id',
+		'order_id',
+		'address',
+		'city',
+		'postal_code',
+		'country'
+	];
 }
