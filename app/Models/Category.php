@@ -17,9 +17,11 @@ class Category extends Model
 	protected $fillable = [
 		'name'
 	];
-  
-	public function laptops(): HasMany
-	{
-		return $this->hasMany(Laptop::class);
-	}
+  // app/Models/Category.php
+
+public function laptops()
+{
+    return $this->hasMany(Laptop::class);
+}
+
 }
