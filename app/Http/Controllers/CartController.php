@@ -157,10 +157,14 @@ class CartController extends Controller
             $totalAmount = $cartItems->sum(fn($item) => $item->laptopVariant->price * $item->quantity);
 
             $order = Order::create([
-                'customer_id' => $user->id,
+                'user_id' => $user->id,
                 'total_amount' => $totalAmount,
                 'payment_method' => $request->payment_method,
                 'status' => 'pending',
+                'shipping_address' => $request->address . ', ' . $request->city . ', ' . $request->postal_code . ', ' . $request->country,
+                'phone' => $user->phone ?? null, // Assuming phone is on User model or add to form
+                'email' => $user->email,
+                'customer_name' => $user->name,
             ]);
 
             foreach ($cartItems as $item) {
@@ -176,14 +180,15 @@ class CartController extends Controller
                 $item->laptopVariant->laptop->decrement('stock', $item->quantity);
             }
 
-            ShippingAddress::create([
-                'customer_id' => $user->id,
-                'order_id' => $order->id,
-                'address' => $request->address,
-                'city' => $request->city,
-                'postal_code' => $request->postal_code,
-                'country' => $request->country,
-            ]);
+            // Remove this as shipping address is now stored directly in order
+            // ShippingAddress::create([
+            //     'customer_id' => $user->id,
+            //     'order_id' => $order->id,
+            //     'address' => $request->address,
+            //     'city' => $request->city,
+            //     'postal_code' => $request->postal_code,
+            //     'country' => $request->country,
+            // ]);
 
             Payment::create([
                 'order_id' => $order->id,
