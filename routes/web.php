@@ -9,6 +9,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VariantController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\Admin\OrderController;
+
 
 Route::get('/', function () {
     return redirect()->route('laptops.index');
@@ -58,6 +60,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/{id}/update', [VariantController::class, 'update'])->name('update');
         Route::delete('/{id}/destroy', [VariantController::class, 'destroy'])->name('destroy');
     });
+
+    // Route cho Orders
+    Route::resource('orders', OrderController::class)->only(['index', 'show']);
+    Route::patch('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 });
 
 // Hiển thị danh sách laptop cho người dùng
