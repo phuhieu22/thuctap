@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Laptop extends Model
 {
 	use SoftDeletes; 
-	use HasFactory; // 👉 thêm dòng này
+	use HasFactory; 
 
 	protected $table = 'laptops';
 
@@ -64,8 +64,13 @@ class Laptop extends Model
         return $this->reviews->avg('rating') ?? 0;
     }
 
-    public function getMainImageAttribute()
-    {
-        return $this->images->first()?->image_path ?? '/images/placeholder.jpg';
-    }
+  public function getMainImageAttribute()
+{
+    return $this->images->first()?->image_path ?? 'assets/images/default.jpg';
+}
+	public function thumbnail()
+{
+    return $this->hasOne(LaptopImage::class)->oldestOfMany();
+}
+	
 }
