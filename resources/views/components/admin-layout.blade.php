@@ -501,6 +501,15 @@
                          </li>
 
                          <li class="nav-item">
+                              <a class="nav-link" href="{{ route('admin.orders.index') }}">
+                                   <span class="nav-icon">
+                                        <iconify-icon icon="solar:cart-bold-duotone"></iconify-icon>
+                                   </span>
+                                   <span class="nav-text"> Orders </span>
+                              </a>
+                         </li>
+
+                         <li class="nav-item">
                               <a class="nav-link menu-arrow" href="#sidebarCategory" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarCategory">
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:clipboard-list-bold-duotone"></iconify-icon>

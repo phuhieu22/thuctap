@@ -3,30 +3,40 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
-	use HasFactory; // 👉 thêm dòng này
-	use SoftDeletes;
+	use HasFactory;
+
 	protected $table = 'orders';
-	public $incrementing = false;
 
 	protected $casts = [
-		'id' => 'int',
-		'customer_id' => 'int',
-		'order_date' => 'datetime',
-		'total_amount' => 'float'
+		'total_amount' => 'float',
+		'user_id' => 'int',
 	];
 
 	protected $fillable = [
-		'customer_id',
-		'order_date',
+		'user_id',
+		'status',
 		'total_amount',
 		'payment_method',
-		'status'
+		'shipping_address',
+		'phone',
+		'email',
+		'customer_name',
 	];
+
+	public function user(): BelongsTo
+	{
+		return $this->belongsTo(User::class);
+	}
+
+	public function orderItems(): HasMany
+	{
+		return $this->hasMany(OrderItem::class);
+	}
 }
