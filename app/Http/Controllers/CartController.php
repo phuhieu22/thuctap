@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Models\ShippingAddress;
 use Illuminate\Support\Facades\DB;
 
+
 class CartController extends Controller
 {
     public function viewCart()
@@ -157,7 +158,7 @@ class CartController extends Controller
             $totalAmount = $cartItems->sum(fn($item) => $item->laptopVariant->price * $item->quantity);
 
             $order = Order::create([
-                'user_id' => $user->id,
+                'customer_id' => $user->id,
                 'total_amount' => $totalAmount,
                 'payment_method' => $request->payment_method,
                 'status' => 'pending',
@@ -206,5 +207,89 @@ class CartController extends Controller
             DB::rollBack();
             return back()->with('error', 'Đặt hàng thất bại. Vui lòng thử lại!');
         }
+    }
+
+    // Form đặt hàng nhanh
+    public function quickOrderForm()
+    {
+        $user = auth()->user();
+
+        return view('order.quick', [
+            'user' => $user,
+            'variants' => \App\Models\LaptopVariant::with('laptop')->get()
+        ]);
+    }
+
+    // Xử lý đơn hàng nhanh
+    public function placeQuickOrder(Request $request)
+{
+    $request->validate([
+        'variant_id' => 'required|exists:laptop_variants,id',
+        'quantity' => 'required|integer|min:1',
+        'payment_method' => 'required|in:cash,credit_card,paypal,bank_transfer',
+        'address' => 'required|string',
+        'city' => 'required|string',
+        'postal_code' => 'required|string',
+        'country' => 'required|string',
+    ]);
+
+    $user = auth()->user();
+    $variant = LaptopVariant::with('laptop')->find($request->variant_id);
+
+    if (!$variant || !$variant->laptop) {
+        return back()->with('error', 'Sản phẩm không tồn tại hoặc bị lỗi.');
+    }
+
+    if ($variant->stock < $request->quantity || $variant->laptop->stock < $request->quantity) {
+        return back()->with('error', 'Sản phẩm không đủ hàng.');
+    }
+
+    DB::beginTransaction();
+
+    try {
+        $totalAmount = $variant->price * $request->quantity;
+
+        $order = Order::create([
+            'customer_id' => $user->id,
+            'total_amount' => $totalAmount,
+            'payment_method' => $request->payment_method,
+            'status' => 'pending',
+        ]);
+
+        OrderItem::create([
+            'order_id' => $order->id,
+            'laptop_id' => $variant->laptop_id,
+            'quantity' => $request->quantity,
+            'price' => $variant->price,
+        ]);
+
+        Payment::create([
+            'order_id' => $order->id,
+            'amount' => $totalAmount,
+            'payment_method' => $request->payment_method,
+            'status' => 'unpaid',
+        ]);
+
+        ShippingAddress::create([
+            'customer_id' => $user->id,
+            'order_id' => $order->id,
+            'address' => $request->address,
+            'city' => $request->city,
+            'postal_code' => $request->postal_code,
+            'country' => $request->country,
+        ]);
+
+        $variant->decrement('stock', $request->quantity);
+        $variant->laptop->decrement('stock', $request->quantity);
+
+        DB::commit();
+
+        return redirect()->route('home')->with('success', 'Đặt hàng nhanh thành công!');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return back()->with('error', 'Lỗi: ' . $e->getMessage());
+    }
+
+
     }
 }
