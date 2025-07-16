@@ -8,8 +8,12 @@ use App\Http\Controllers\LaptopController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VariantController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ResetPasswordController;
-use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+
+
+
 
 
 Route::get('/', function () {
@@ -62,8 +66,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     // Route cho Orders
-    Route::resource('orders', OrderController::class)->only(['index', 'show']);
-    Route::patch('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+    Route::resource('orders', AdminOrderController::class)->only(['index', 'show']);
+    Route::patch('orders/{order}/update-status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
 });
 
 // Hiển thị danh sách laptop cho người dùng
@@ -104,3 +108,9 @@ Route::get('/logout', function () {
 
 Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+Route::get('/order/quick', [CartController::class, 'quickOrderForm'])->middleware('auth')->name('order.quick.form');
+Route::post('/order/quick', [CartController::class, 'placeQuickOrder'])->middleware('auth')->name('order.quick.place');
+Route::middleware('auth')->get('/order-history', [\App\Http\Controllers\OrderController::class, 'history'])->name('order.history');
+
+

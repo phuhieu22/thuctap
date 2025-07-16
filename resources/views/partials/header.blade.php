@@ -25,6 +25,12 @@
                   <a class="nav-link me-4" href="#company-services">Services</a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link me-4" href="/order/quick">Order</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link me-4" href="/order-history">Order history</a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link me-4" href="{{ route('products.index') }}">Products</a>
                 </li>
                 <li class="nav-item">
