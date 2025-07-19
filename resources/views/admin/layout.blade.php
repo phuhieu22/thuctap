@@ -688,6 +688,16 @@
                     </li>
 
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('reviews.index') }}">
+                            <span class="nav-icon">
+                                <iconify-icon icon="solar:chat-square-like-bold-duotone"></iconify-icon>
+                            </span>
+                            <span class="nav-text"> Reviews </span>
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item">
                         <a class="nav-link menu-arrow" href="#sidebarPurchases" data-bs-toggle="collapse"
                             role="button" aria-expanded="false" aria-controls="sidebarPurchases">
                             <span class="nav-icon">
@@ -877,15 +887,6 @@
                                 </li>
                             </ul>
                         </div>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="pages-review.html">
-                            <span class="nav-icon">
-                                <iconify-icon icon="solar:chat-square-like-bold-duotone"></iconify-icon>
-                            </span>
-                            <span class="nav-text"> Reviews </span>
-                        </a>
                     </li>
 
                     <li class="menu-title mt-2">Other Apps</li>

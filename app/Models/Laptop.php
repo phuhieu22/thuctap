@@ -72,5 +72,8 @@ class Laptop extends Model
 {
     return $this->hasOne(LaptopImage::class)->oldestOfMany();
 }
-	
+	public function reviews()
+{
+    return $this->hasMany(Review::class);
+}
 }

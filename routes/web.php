@@ -4,13 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\LaptopController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VariantController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 
 
 
@@ -30,6 +32,7 @@ Route::get('/about', fn() => view('about'))->name('about');
 Route::get('/contact', fn() => view('contact'))->name('contact');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{id}', [BlogController::class, 'show'])->name('blog.show');
+Route::middleware('auth')->post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
 
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -68,6 +71,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Route cho Orders
     Route::resource('orders', AdminOrderController::class)->only(['index', 'show']);
     Route::patch('orders/{order}/update-status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
+
+     Route::get('reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
+    Route::delete('reviews/{id}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
 // Hiển thị danh sách laptop cho người dùng
