@@ -42,4 +42,8 @@ class User extends Authenticatable  // 👈 Phải kế thừa Authenticatable
     {
         return $this->password_hash;
     }
+    public function reviews()
+{
+    return $this->hasMany(Review::class, 'customer_id');
+}
 }
