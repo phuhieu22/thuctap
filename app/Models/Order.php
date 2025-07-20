@@ -18,14 +18,9 @@ class Order extends Model
     ];
 
     protected $fillable = [
-        'customer_id',
-        'status',
-        'total_amount',
-        'payment_method',
-        'shipping_address',
-        'phone',
-        'email',
-        'customer_name',
+        'customer_id','variant_id','quantity',
+        'address','city','postal_code','country',
+        'payment_method','total_amount','status',
     ];
 
     public function customer(): BelongsTo

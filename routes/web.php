@@ -11,10 +11,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
-
-
-
-
+use App\Http\Controllers\PaymentController;
+use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return redirect()->route('laptops.index');
@@ -109,8 +108,22 @@ Route::get('/logout', function () {
 Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
-Route::get('/order/quick', [CartController::class, 'quickOrderForm'])->middleware('auth')->name('order.quick.form');
-Route::post('/order/quick', [CartController::class, 'placeQuickOrder'])->middleware('auth')->name('order.quick.place');
+Route::get('/order/quick', [CartController::class, 'quickOrderForm'])
+    ->middleware('auth')
+    ->name('order.quick.form');
+
+Route::post('/order/quick', [OrderController::class, 'placeQuickOrder'])
+    ->middleware('auth')
+    ->name('order.quick.place');
+
 Route::middleware('auth')->get('/order-history', [\App\Http\Controllers\OrderController::class, 'history'])->name('order.history');
 
+// //Payment with VNPay
+Route::middleware('auth')->group(function () {
+    Route::get('/vnpay/create/{order}', [PaymentController::class, 'createVnpay'])
+         ->name('vnpay.create');
+});
 
+// // Callback public (không auth)
+// Route::get('/vnpay/return', [PaymentController::class, 'vnpayReturn'])
+//      ->name('vnpay.return');
