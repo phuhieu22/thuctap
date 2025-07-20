@@ -13,7 +13,12 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
-
+    'vnpay' => [
+        'tmn_code'    => env('VNPAY_TMN_CODE'),
+        'hash_secret' => env('VNPAY_HASH_SECRET'),
+        'url'         => env('VNPAY_URL'),
+        'return_url'  => env('VNPAY_RETURN_URL'),
+    ],
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
